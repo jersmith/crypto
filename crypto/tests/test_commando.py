@@ -1,8 +1,14 @@
+# pylint: disable=no-member
+""" Unit test cases for commando command line processor. """
+
 import unittest
 from crypto.common import commando
 
+
 class TestCommando(unittest.TestCase):
+  """ Test fixture for Commando test cases. """
   def test_no_positional_parameters(self):
+    """ No positional parameters in template and/or in arguments. """
     (err, value) = commando.parse('', [])
     self.assertFalse(err)
 
@@ -10,7 +16,13 @@ class TestCommando(unittest.TestCase):
     self.assertTrue(err)
     self.assertEqual(value, 'Too many parameters')
 
+    (err, value) = commando.parse('pos1', [])
+    self.assertTrue(err)
+    self.assertEqual(value, 'Not enough required parameters')
+
+
   def test_positional_parameters(self):
+    """ Positional parameter test cases: match, no match, too many, too few. """
     positionals = 'pos1 pos2 pos3'
 
     (err, value) = commando.parse(positionals, ['alpha'])
@@ -28,6 +40,7 @@ class TestCommando(unittest.TestCase):
     self.assertEqual(value['pos3'], 'gamma')
 
   def test_options(self):
+    """ Option arguments test cases. """
     (err, value) = commando.parse('[opt]', ['--opt=alpha'])
     self.assertFalse(err)
     self.assertTrue('opt' in value.keys())
@@ -55,6 +68,7 @@ class TestCommando(unittest.TestCase):
     self.assertEqual(value['opt1'], 'alpha')
 
   def test_flags(self):
+    """ Flag argument test cases. """
     (err, value) = commando.parse('(flag)', ['--flag'])
     self.assertFalse(err)
     self.assertTrue('flag' in value.keys())

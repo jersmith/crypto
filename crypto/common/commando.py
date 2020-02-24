@@ -85,20 +85,8 @@ def parse_arguments(arguments):
 
   return (positional_arguments, option_values, flag_values)
 
-def parse(template, arguments):
-  """ Given a parsed template and arguments, create a dictionary with the template
-    values assigned.
-
-    TODO: Handle unknown arguments.
-  """
-
-  (positional_parameters, options, flags) = parse_template(template)
-  (positional_arguments, option_values, flag_values) = parse_arguments(arguments)
-
-  err = False
-  command_line_options = {}
-
-  # Positionals
+def set_positional_arguments(positional_parameters, positional_arguments, command_line_options):
+  """ Validate and set positional command line arguments.  """
   if len(positional_parameters) < len(positional_arguments):
     return (True, 'Too many parameters')
 
@@ -108,7 +96,10 @@ def parse(template, arguments):
   for i, parm  in enumerate(positional_parameters):
     command_line_options[parm] = positional_arguments[i]
 
-  # Options
+  return None
+
+def set_optional_arguments(options, option_values, command_line_options):
+  """ Validate and set optional command cline arguments. """
   option_value_keys = option_values.keys()
 
   for option in options:
@@ -127,7 +118,10 @@ def parse(template, arguments):
       else:
         return (True, f'Missing required option: {option}')
 
-  # Flags
+  return None
+
+def set_flag_arguments(flags, flag_values, command_line_options):
+  """ Set flag command line arguments. """
   for flag in flags:
     if flag in flag_values:
       command_line_options[flag] = True
@@ -135,5 +129,30 @@ def parse(template, arguments):
       command_line_options[flag] = True
     else:
       command_line_options[flag] = False
+
+def parse(template, arguments):
+  """ Given a parsed template and arguments, create a dictionary with the template
+    values assigned.
+
+    TODO: Handle unknown arguments.
+  """
+
+  (positional_parameters, options, flags) = parse_template(template)
+  (positional_arguments, option_values, flag_values) = parse_arguments(arguments)
+
+  command_line_options = {}
+
+  # Positionals
+  val = set_positional_arguments(positional_parameters, positional_arguments, command_line_options)
+  if val is not None:
+    return val
+
+  # Options
+  val = set_optional_arguments(options, option_values, command_line_options)
+  if val is not None:
+    return val
+
+  # Flags
+  set_flag_arguments(flags, flag_values, command_line_options)
 
   return (False, command_line_options)
