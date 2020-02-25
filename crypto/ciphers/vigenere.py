@@ -22,7 +22,7 @@ def encrypt(key, plain_text):
     if letter in ALPHABET:
       shift_index = shifts[key_index % len(key)]
       letter_index = ALPHABET.index(letter)
-      cipher_text += ALPHABET[(letter_index + (26 - shift_index)) % 26]
+      cipher_text += ALPHABET[(letter_index + shift_index) % 26]
       key_index += 1
 
   return cipher_text
@@ -41,7 +41,7 @@ def decrypt(key, cipher_text):
   for letter in cipher_text:
     shift_index = shifts[key_index % len(key)]
     letter_index = ALPHABET.index(letter)
-    plain_text += ALPHABET[(letter_index + shift_index) % 26]
+    plain_text += ALPHABET[(letter_index + (26 - shift_index)) % 26]
     key_index += 1
 
   return plain_text

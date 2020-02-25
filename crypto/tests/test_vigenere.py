@@ -20,5 +20,5 @@ class TestVigenere(unittest.TestCase):
 
     self.assertEqual(plain_text, 'ABROKENCLOCKISRIGHTTWICEADAY')
 
-    cipher_text = vigenere.encrypt('J', 'J')
-    self.assertEqual(cipher_text, 'A')
+    cipher_text = vigenere.encrypt('C', 'C')
+    self.assertEqual(cipher_text, 'E')
