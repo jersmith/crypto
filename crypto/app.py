@@ -3,6 +3,7 @@
 import sys
 from crypto.common import commando
 from crypto.ciphers import caesar
+from crypto.ciphers import vigenere
 
 def format_block_text(text):
   """ Print text in block format. """
@@ -33,6 +34,8 @@ def run():
 
   if value['cipher'] == 'caesar':
     cipher = caesar
+  elif value['cipher'] == 'vigenere':
+    cipher = vigenere
 
   output_text = ''
   for line in data:
