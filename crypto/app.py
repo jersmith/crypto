@@ -4,17 +4,17 @@ import sys
 from crypto.common import commando
 from crypto.ciphers import caesar
 
-def format(text):
+def format_block_text(text):
   """ Print text in block format. """
   i = 0
   out = ''
+
   while i < len(text):
-    if i % 24 == 23:
+    if i > 0 and i % 24 == 0:
       print(out)
       out = ''
-    else:
-      out += text[i] + ' '
 
+    out += text[i] + ' '
     i += 1
 
   if len(out) > 0:
@@ -24,7 +24,7 @@ def run():
   """ Drive the ciphers from command line input. """
   (err, value) = commando.parse('cipher [key] (decrypt)', sys.argv[1:])
 
-  if err == True:
+  if err:
     print(value)
     return
 
@@ -36,9 +36,9 @@ def run():
 
   output_text = ''
   for line in data:
-    if value['decrypt'] == True:
+    if value['decrypt']:
       output_text += cipher.decrypt(value['key'], line)
     else:
       output_text += cipher.encrypt(value['key'], line)
 
-  format(output_text)
+  format_block_text(output_text)

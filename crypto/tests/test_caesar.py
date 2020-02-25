@@ -4,19 +4,25 @@ import unittest
 import random
 from crypto.ciphers import caesar
 
-
 class TestCaesar(unittest.TestCase):
   """ Test fixture for Caesar test cases. """
   def test_rotate(self):
     """ Caesar shift """
     key = ['F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-           'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'A', 'B', 'C', 'D', 'E' ]
+           'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'A', 'B', 'C', 'D', 'E']
 
     cipher_text = caesar.encrypt(key, 'a broken clock is right twice a day')
     self.assertEqual(cipher_text[0], 'F')
     plain_text = caesar.decrypt(key, cipher_text)
 
     self.assertEqual(plain_text, 'ABROKENCLOCKISRIGHTTWICEADAY')
+
+    cipher_text = caesar.encrypt(key, 'We the people of the United States, in order')
+    plain_text = caesar.decrypt(key, cipher_text)
+
+    self.assertEqual(plain_text, 'WETHEPEOPLEOFTHEUNITEDSTATESINORDER')
+
+
 
   def test_scramble(self):
     """ Caesar scramble """
@@ -32,6 +38,3 @@ class TestCaesar(unittest.TestCase):
     plain_text = caesar.decrypt(key, cipher_text)
 
     self.assertEqual(plain_text, 'ABROKENCLOCKISRIGHTTWICEADAY')
-
-  
-
