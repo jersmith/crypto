@@ -5,13 +5,13 @@ from crypto.common import commando
 from crypto.ciphers import caesar
 from crypto.ciphers import vigenere
 
-def format_block_text(text):
+def format_block_text(text, width=24):
   """ Print text in block format. """
   i = 0
   out = ''
 
   while i < len(text):
-    if i > 0 and i % 24 == 0:
+    if i > 0 and i % width == 0:
       print(out)
       out = ''
 
@@ -23,7 +23,7 @@ def format_block_text(text):
 
 def run():
   """ Drive the ciphers from command line input. """
-  (err, value) = commando.parse('cipher [key] (decrypt)', sys.argv[1:])
+  (err, value) = commando.parse('cipher [key|<width>] (decrypt|raw)', sys.argv[1:])
 
   if err:
     print(value)
@@ -44,4 +44,9 @@ def run():
     else:
       output_text += cipher.encrypt(value['key'], line)
 
-  format_block_text(output_text)
+  if value['raw']:
+    print(output_text)
+  elif 'width' in value:
+    format_block_text(output_text, int(value['width']))
+  else:
+    format_block_text(output_text)
