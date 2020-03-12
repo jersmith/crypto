@@ -6,7 +6,7 @@ from crypto.common import commando
 
 
 class TestCommando(unittest.TestCase):
-  """ Test fixture for Commando test cases. """
+  """ Test suite for Commando test cases. """
   def test_no_positional_parameters(self):
     """ No positional parameters in template and/or in arguments. """
     (err, value) = commando.parse('', [])

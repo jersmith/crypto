@@ -11,6 +11,7 @@ def encrypt(key, plain_text):
   cipher_text = ''
   for letter in plain_text.upper():
     if letter in ALPHABET:
+      print(f'{letter} : {key[ALPHABET.index(letter)]}')
       cipher_text += key[ALPHABET.index(letter)]
 
   return cipher_text
